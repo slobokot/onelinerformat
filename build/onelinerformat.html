@@ -52,7 +52,7 @@ function moveSingleElementInBlockBackToSingleLine(text) {
 }
 
 function formatWordEqualWordSpaceInternal(text) {
-    if (! /([0-9a-z]+=.* )+/gi.test(text))
+    if (! /([0-9a-z]+=.* ){2,}/gi.test(text))
         return text
 
     var i = advanceToNot(text, 0, ' ')
@@ -115,6 +115,7 @@ function formatOneLinerInternal(text) {
 
     result = formatWordEqualWordSpace(result)
     result = moveSingleElementInBlockBackToSingleLine(result)
+    result = formatWordEqualWordSpace(result)
 
     return result
 }

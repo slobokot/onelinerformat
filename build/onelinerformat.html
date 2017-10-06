@@ -120,7 +120,8 @@ function formatOneLinerInternal(text) {
 }
 
 function formatOneLiner() {
-    var text = document.getElementById('oneliner')
+    var text = document.getElementById('oneliner').value
+    text = formatOneLinerInternal(text)
     document.getElementById('formattedLine').innerHTML = "<pre>" + text + "</pre>"
 }
 </script>

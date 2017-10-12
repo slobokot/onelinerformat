@@ -82,6 +82,19 @@ function formatWordEqualWordSpace(text) {
     return result
 }
 
+function formatExceptionsInternal(text) {
+    return text.replace(new RegExp(' at ', 'g'), '\n at ')
+}
+        
+function formatExceptions(text) {
+    var lines = text.split("\n", -1)
+    var result = ""
+    for(var i = 0 ; i < lines.length; i++) {
+        result += formatExceptionsInternal(lines[i]) + "\n"
+    }
+    return result
+}
+        
 function formatOneLinerInternal(text) {
     var result = ""
     var indent = ""
@@ -116,7 +129,8 @@ function formatOneLinerInternal(text) {
     result = formatWordEqualWordSpace(result)
     result = moveSingleElementInBlockBackToSingleLine(result)
     result = formatWordEqualWordSpace(result)
-
+    result = formatExceptions(result)
+    
     return result
 }
 

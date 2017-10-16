@@ -134,15 +134,38 @@ function formatOneLinerInternal(text) {
     return result
 }
 
+function updateTitle(text) {
+    var title = ""
+    var trimmed = text.trim()
+    if (trimmed.length == 0)
+        title = "Format string"
+    else if (trimmed.length < 10) 
+        title = "Format: " + trimmed
+    else 
+        title = trimmed.substring(0, 5) + "..." + trimmed.substring(trimmed.length - 5)
+    document.title = title
+}        
+        
 function formatOneLiner() {
     var text = document.getElementById('oneliner').value
     text = formatOneLinerInternal(text)
     document.getElementById('formattedLine').innerHTML = "<pre>" + text + "</pre>"
+    updateTitle(text)
+}
+        
+window.onload = function() {    
+    updateTitle("")
+    var textarea = document.getElementById("oneliner");
+}
+
+window.onbeforeunload = function() {
+    var text = document.getElementById('oneliner').value.trim()    
+    return text.length > 0 ? "you have some text here" : null
 }
 </script>
 </head>
 <body>
-    <textarea id="oneliner" cols="200" autofocus="autofocus" onchange="formatOneLiner()">
+    <textarea id="oneliner" cols="200" autofocus="autofocus" onchange="formatOneLiner()" onkeyup="formatOneLiner()">
     </textarea>
     <div id="formattedLine">
     </div>

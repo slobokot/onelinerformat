@@ -95,9 +95,41 @@ function formatExceptions(text) {
     return result
 }
         
-function formatOneLinerInternal(text) {
+function formatXmlInternal(text) {
+    text = text.replace(new RegExp('<','g'), '&lt;')
+    text = text.replace(new RegExp('>','g'), '&gt;')
+    /*
+    var i = 0
+    while(i < text.length && i >= 0) {
+        var tagOpenIdxB = text.indexOf("&lt;", i)
+        if (tagOpenIdxB >= 0) {
+            var tagOpenIdxE = text.indexOf("&gt;", tagOpenIdxB)
+            if (tagOpenIdxE > 0) {            
+                var tagOpen = text.substring(tagOpenIdxB + 1, tagOpenIdxE)
+                var tagCloseIdxB = text.indexOf("&lt;/" + tagOpen + "&gt;", tagOpenIdxE)
+                if (tagCloseIdxB > 0) {
+                    text = text.replace(new)
+                }
+            }
+        }
+        i = tagOpenIdxB
+    }
+    */
+    return text
+}
+
+function formatXml(text) {
+    var lines = text.split("\n", -1)
     var result = ""
+    for(var i = 0 ; i < lines.length; i++) {
+        result += formatXmlInternal(lines[i]) + "\n"
+    }
+    return result
+}
+
+function formatBracesAndCommas(text) {
     var indent = ""
+    var result = ""
 
     for(var i = 0; i < text.length; i++) {
         switch(text[i]) {
@@ -123,14 +155,21 @@ function formatOneLinerInternal(text) {
             default:
                 result += text[i];
                 break;
-        }
+        }        
     }
+    return result
+}
 
+function formatOneLinerInternal(text) {
+    var result = ""
+
+    result = formatBracesAndCommas(text)
     result = formatWordEqualWordSpace(result)
     result = moveSingleElementInBlockBackToSingleLine(result)
     result = formatWordEqualWordSpace(result)
     result = formatExceptions(result)
-    
+    result = formatXml(result)
+
     return result
 }
 
